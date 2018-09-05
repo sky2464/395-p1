@@ -18,6 +18,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
+	if request.method == 'POST':
+		session['logged_in'] = True
+		flash('You were just logged in.')
+		return redirect(url_for('item'))
 	return render_template('index.html')
 
 # Main page
@@ -30,6 +34,7 @@ def items():
 		newItem = request.form ['New_Item']
 		cursor = connection.execute("SELECT rowid From items WHERE name = ? ", (newItem,))
 		theFetch =cursor.fetchone()
+	return render_template('todo.html')
 
 connection.close()
 
