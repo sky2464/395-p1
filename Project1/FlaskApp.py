@@ -4,9 +4,11 @@ from functools import wraps
 
 connection = sqlite3.connect('database.db')
 
-cursor = connection.cursor()
-cursor.execute("DROP TABLE items")
-cursor.execute("CREATE TABLE items(id INT, name Text)")
+cur = connection.cursor()
+cur.execute("Create TABLE Users (users_name text) ")
+cur.execute("Create TABLE items (items_names text)")
+cur.execute("DROP TABLE items")
+cur.execute("CREATE TABLE items(id INT, name Text)")
 
 
 
@@ -16,7 +18,7 @@ app = Flask(__name__)
 # index
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
 	if request.method == 'POST':
 		session['logged_in'] = True
@@ -32,8 +34,9 @@ def items():
 	g.db= connection()
 	if request.methods == 'POST':
 		newItem = request.form ['New_Item']
-		cursor = connection.execute("SELECT rowid From items WHERE name = ? ", (newItem,))
-		theFetch =cursor.fetchone()
+		#cursor = 
+		connection.execute("SELECT rowid From items WHERE name = ?", (newItem,))
+		#theFetch =cursor.fetchone()
 	return render_template('todo.html')
 
 connection.close()
