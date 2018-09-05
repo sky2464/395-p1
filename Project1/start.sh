@@ -1,3 +1,3 @@
-pip install -r requirements.txt
+#pip install -r requirements.txt
 pip freeze > requirements.txt
-python3 app.py
+python3 FlaskApp.py
