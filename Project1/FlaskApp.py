@@ -5,6 +5,8 @@ from functools import wraps
 connection = sqlite3.connect('database.db')
 
 cursor = connection.cursor()
+cursor.execute("DROP TABLE items")
+cursor.execute("CREATE TABLE items(id INT, name Text)")
 
 
 connection.close()
