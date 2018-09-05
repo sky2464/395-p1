@@ -9,7 +9,7 @@ cursor.execute("DROP TABLE items")
 cursor.execute("CREATE TABLE items(id INT, name Text)")
 
 
-connection.close()
+
 # Create Flask object
 app = Flask(__name__)
 
@@ -28,10 +28,10 @@ def items():
 	g.db= connection()
 	if request.methods == 'POST':
 		newItem = request.form ['New_Item']
-		cursor = g.db.execute("SELECT rowid From items WHERE name = ? ", (newItem,))
+		cursor = connection.execute("SELECT rowid From items WHERE name = ? ", (newItem,))
 		theFetch =cursor.fetchone()
 
-
+connection.close()
 
 '''
 	# Insert the Navid user for test
@@ -52,3 +52,6 @@ rows = cursor.fetchall()
 for row in rows:
 	print(row)
 '''
+
+if __name__ == '__main__':
+	app.run(debug=True)
