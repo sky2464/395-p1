@@ -5,93 +5,58 @@ from functools import wraps
 # Create Flask object
 app = Flask(__name__)
 
-app.database="database.db"
+app.database = "database.db"
+
 
 def connection_db():
-	return sqlite3.connect(app.database)
+    return sqlite3.connect(app.database)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-	if request.method == 'POST':
-		flash('Hereeeeeeeeee i goooooooooooooo')
-		session['logged_in'] = True
-		flash('You were just logged in.')
-		return redirect("todo.html")
-	return render_template('index.html')
-	
+    if request.method == 'POST':
+        flash('Hereeeeeeeeee i goooooooooooooo')
+        session['logged_in'] = True
+        flash('You were just logged in.')
+        return redirect("todo.html")
+    return render_template('index.html')
+
+
 @app.route('/login')
 def login():
-	flash('Welcome')
-	return render_template("todo.html")
-		
+    flash('Welcome')
+    return render_template("todo.html")
+
+
 @app.route('/logout')
 def logout():
-	flash('Logged out')
-	return render_template("index.html")	
-	
-@app.route("/newuser")
-def newuser():
-	#return render_template("newuser.html")
-	return render_template('newuser.html')
+    flash('Logged out')
+    return render_template("index.html")
 
-# to do list
-@app.route('/todo')
-#def todo():
-		#return render_template('todo.html')
-def item():
-	g.db = connection_db()
-	if request.method == 'POST':
-		if 'new' in request.form:
-			addList = request.form['new']
-			cur = g.db.execute("SELECT rowid FROM posts WHERE List = ?", (addList,))
-			data = cur.fetchone()
-			if data is None:
-				# Insert new item
-				cur = g.db.execute('INSERT into posts (List,Note) VALUES (?,?)', (addList,'Not Done'))
-				g.db.commit()
-			cur = g.db.execute('select * from posts')
-			posts = [dict(List=row[0],Note=row[1]) for row in cur.fetchall()]
-			g.db.close()
-			return render_template('todo.html',posts=posts)
-		elif 'delete' in request.form:
-			deleteList = request.form['delete']
-			# Delete item 
-			cur = g.db.execute('DELETE FROM posts WHERE List = ?', (deleteList,))
-			g.db.commit()
-			cur = g.db.execute('select * from posts')
-			posts = [dict(List=row[0],Note=row[1]) for row in cur.fetchall()]
-			g.db.close()
-			return render_template('todo.html',posts=posts)
-		elif 'mark' in request.form:
-				markItem = request.form['mark']
-				''' Mark item '''
-				cur = g.db.execute('UPDATE posts SET Status = ? WHERE Item = ?', ('Done', markItem))
-				g.db.commit()
-				cur = g.db.execute('select * from posts')
-				posts = [dict(Item=row[0],Status=row[1]) for row in cur.fetchall()]
-				g.db.close()
-				return render_template('item.html',posts=posts)
-	else:
-		cur = g.db.execute('select * from posts')
-		posts = [dict(List=row[0],Note=row[1]) for row in cur.fetchall()]
-		g.db.close()
-		return render_template('todo.html',posts=posts)
-			
+
+@app.route("/register")
+def register():
+    # return render_template("register.html")
+    return render_template('register.html')
 
 
 '''create account '''
-@app.route('/create', methods=['GET','POST'])
-def create():		
-	return render_template("newuser.html")
-	
+
+
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    return render_template("register.html")
+
+
 @app.route('/register')
 def register():
-	#return redirect(url_for('index'))
-	flash('Now log in')
-	return render_template("home.html")
+    # return redirect(url_for('index'))
+    flash('Now log in')
+    return render_template("home.html")
 
 
-
-	
-if __name__=='__main__':
-	app.run(debug=True)
+@app.route('/todo')
+# def todo():
+# return render_template('todo.html')
+# to do list
+g.db.close()
