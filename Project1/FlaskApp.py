@@ -65,7 +65,7 @@ def items():
 		# theFetch =cursor.fetchone()
 	return render_template('todo.html')
 
-g.db.close()
+
 
 '''
 	# Insert the Navid user for test
@@ -86,7 +86,8 @@ rows = cursor.fetchall()
 for row in rows:
 	print(row)
 '''
-# Connect to data base
+# close the connection
+#g.db.close()
 
 
 
