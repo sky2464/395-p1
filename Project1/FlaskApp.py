@@ -61,7 +61,9 @@ def items():
 		# theFetch =cursor.fetchone()
 	return render_template('todo.html')
 
-
+@app.route('/todo2')
+def todo2():
+  return render_template('hello.html')
 
 '''
 	# Insert the Navid user for test
