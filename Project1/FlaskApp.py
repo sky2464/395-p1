@@ -26,31 +26,28 @@ with sqlite3.connect("database.db") as connection:
 @app.route('/', methods=['GET', 'POST'])
 def home():
 
-	if request.method == 'POST':
-    flash('Hereeeeeeeeee i goooooooooooooo')
-		session['logged_in'] = True
-		flash('You were just logged in.')
-		return redirect(url_for('item'))
-	return render_template('index.html')
+    if request.method == 'POST':
+      flash('Hereeeeeeeeee i goooooooooooooo')
+      session['logged_in'] = True
+      flash('You were just logged in.')
+      return redirect(url_for('item'))
+    return render_template('index.html')
 
-
-
-
- def login():
-	error = None
-	g.db = connect_db()
-	if request.method == 'POST':
-		user = request.form['username']
-		cur = g.db.execute("SELECT rowid FROM users WHERE Name = ?", (user,))
-		data = cur.fetchone()
-		g.db.close()
-		if data is None:
-			error = 'Invalid Credential. Please try again.'
-		else:
-			session['logged_in'] = True
-			flash('You were just logged in.')
-			return redirect(url_for('item'))
-	return render_template('login.html', error=error)
+def login():
+    error = None
+    g.db = connect_db()
+    if request.method == 'POST':
+      user = request.form['username']
+      cur = g.db.execute("SELECT rowid FROM users WHERE Name = ?", (user,))
+      data = cur.fetchone()
+      g.db.close()
+      if data is None:
+        error = 'Invalid Credential. Please try again.'
+      else:
+        session['logged_in'] = True
+        flash('You were just logged in.')
+        return redirect(url_for('item'))
+    return render_template('login.html', error=error)
    
     
     
@@ -63,12 +60,12 @@ def items():
 	g.db= connection()
 	if request.methods == 'POST':
 		newItem = request.form ['New_Item']
-		#cursor = 
+		# cursor = 
 		connection.execute("SELECT rowid From items WHERE name = ?", (newItem,))
-		#theFetch =cursor.fetchone()
+		# theFetch =cursor.fetchone()
 	return render_template('todo.html')
 
-    g.db.close()
+g.db.close()
 
 '''
 	# Insert the Navid user for test
@@ -90,8 +87,7 @@ for row in rows:
 	print(row)
 '''
 # Connect to data base
-def connection():
-	return sqlite3.connect("database.db")
+
 
 
 if __name__ == '__main__':
