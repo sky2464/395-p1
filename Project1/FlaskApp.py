@@ -11,7 +11,7 @@ with sqlite3.connect("database.db") as connection:
 	c.execute("CREATE TABLE IF NOT EXISTS items (items_names text)")
 
 
-# connection = sqlite3.connect('database.db')
+connection = sqlite3.connect('database.db')
 
 # cur = connection.cursor()
 # cur.execute("Create TABLE Users (users_name text) ")
@@ -34,20 +34,16 @@ def home():
     return render_template('index.html')
 
 def login():
-    error = None
-    g.db = connect_db()
+    g.db = connection
     if request.method == 'POST':
-      user = request.form['username']
+      user = request.form['html_username']
       cur = g.db.execute("SELECT rowid FROM users WHERE Name = ?", (user,))
-      data = cur.fetchone()
+      cur.fetchone()
       g.db.close()
-      if data is None:
-        error = 'Invalid Credential. Please try again.'
-      else:
-        session['logged_in'] = True
-        flash('You were just logged in.')
-        return redirect(url_for('item'))
-    return render_template('login.html', error=error)
+      session['logged_in'] = True
+      flash('You were just logged in.')
+      return redirect(url_for('item'))
+    return render_template('login.html')
    
     
     
@@ -70,11 +66,11 @@ def items():
 '''
 	# Insert the Navid user for test
 sql = "Insert into users (username) values ('Navid')"
-cursor.execute(sql)
+cursor.execute(sql) -- worked
 
 # Insert the project1 items for test
 sql = "Insert into items (name) values ('Project1')"
-cursor.execute(sql)
+cursor.execute(sql) 
 
 connection.commit()
 
